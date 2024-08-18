@@ -72,5 +72,4 @@ date -R - показывает время с указанием часового
 
 hostnamectl set-hostname <new-hostname> - пишет <new-hostname> в файл /etc/hostname, но не затрагивает /etc/hosts
 
-
-
+Тестовое изменение)
