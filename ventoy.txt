@@ -1,0 +1,8 @@
+Ventoy:
+Ctrl+d - memdisk mode. Just press Ctrl+d before you select the iso file in ventoy's boot menu. (Press again to restore the default mode). In Memdisk mode, Ventoy will load the whole ISO.IMG file into memory and boot it.
+
+Ctrl + w - Use WIMBOOT mode only when you run into problem with the default mode. WIMBOOT can only be used to boot official Windows ISO files and some WinPE ISO files.
+
+Ctrl+r - GRUB2 mode. Use GRUB2 mode only when you run into problem with the default mode. GRUB2 mode can only be used to boot Linux ISO which contains grub2 configuration file and can not be used to boot Windows/WinPE/Unix.
+
+m - считает хэш сумму

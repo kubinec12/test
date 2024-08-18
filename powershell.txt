@@ -1,0 +1,206 @@
+$PSVersionTable автоматическая переменная
+
+Ctrl+Space справа от первых букв команды - выводит список команд, которые подходят (похоже на Tab)
+
+Format-Table aka ft
+ft -Autosize
+ft -GroupBy подразумевает предварительную сортировку при помощи Sort-Object
+ft -HideTableHeaders
+ft -RepeatHeader
+ft -view <view name> 
+Get-Process notepad |
+  Format-Table ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime} - вычисляемое поле
+
+*.format.ps1xml в этих файлах описание формата вывода для различных команд
+
+Format-List aka fl
+
+Вывести все свойства объекта(объектов):
+Select-Object -property *
+fl -property *
+
+Get-ChildItem aka ls aka dir aka gci
+ls -fo - покажет скрытые и системные файлы
+
+Select-Object aka select выбирает свойства объектов или объекты
+Select-Object [-Property] 
+Get-Service -Name w32time | Select-Object -Property * - покажет все свойсва объекта
+gc| Select-Object -First 5 -Property Name, Source - непонятно пример чего
+cat <файл> | Select-Object -First 5 - выведет первые пять строчек файла
+select -index 5
+select -last
+нет опций -head и -tail
+select -First 1 -Property * - покажет все свойства объекта?
+
+Where-object aka where aka ? фильтрует(выбирает) объекты на основании значений их свойств (выбирает тот объект который удовлеворяет запросу):
+Where-Object {$_.WorkingSet -gt 20000000}
+Where-object {$_.Name -like "*Weather*"}
+Get-Service | Where-Object {$_.Status -eq "Running"}
+where { $_.PsIsContainer -eq $false }
+Get-Service | Where-Object CanPauseAndContinue
+
+Get-Command aka gcm ищет команды
+Get-Command -ParameterType Process выводит все команды, которые принимают на вход объект типа Process. На самом деле не все, а только из текущей сессии.
+Get-Command -ParameterName scope выводит все команды, у которых есть параметр scope (ищет в текущей сессии)
+Get-Command -noun Item - выводит все команды с существительным Item
+gcm -CommandType All where - выводит и командлеты и приложения
+
+Get-Content aka gc aka cat aka type показывает содержимое файла
+gc test.txt -head 10
+gc -tail 10 log.txt
+
+Get-Help показывает помощь по команде
+Get-Help ps -Parameter module
+Get-Help ps -ShowWindow открывает окошко со статьей
+help ps | Out-GridView
+F1 справа от параметра открывает статью помощи на этом параметре
+Alt+H тоже что-то делает
+
+Get-Random -Minimum 1 -Maximum 100
+1, 2, 3, 5, 8, 13 | Get-Random -count 3
+"red", "yellow", "blue" | Get-Random
+
+Get-Member aka gm выводит тип объекта, его элементы, свойства и методы
+Get-Service -Name w32time | Get-Member -MemberType Method выводит методы объекта 
+
+Sort-Object aka sort 
+Sort-Object -Property
+Сначала sort, потом format-*, наоборот не сработает
+
+Out-File -Width -Encoding -Append вывод в файл, по умолчанию перезаписывает
+
+Out-Host aka oh автоматически прибавляется к каждой команде, которая дает выводит, используем вручную только если нужны парметры
+Out-Host -paging постраничный вывод
+
+Вывести опции модуля PSReadLine:
+Get-PSReadLineOption
+
+-PassThru этот параметр заставляет команду дать выходные данные, если это не предусмотрено по умолчанию, напр для start-service
+. точка это member-access operator
+
+Фильтруй слева. Форматируй справа.
+Четыре и менее свойсв по умолчанию выводятся в таблицу, более в список.
+
+$_ aka $PSItem - автоматическая переменная, которая указывает на текущий элемент в конвеере
+
+& - invoke operator (call operator)
+@() - оператор массива, $a = @() - создает пустой массив, но можно создать массив просто перечислив элементы через запятую
+{} - script block ?
+% - остаток от деления нацело
+.. range operator
+
+Операторы сравнения:
+'PowerShell' -like '*shell' #True
+'PowerShell' -match '^*.shell$' #True
+-eq равно
+-ne не равно
+
+$Numbers = 1..10 
+$Numbers -contains 9 есть ли в коллекции указанное значение
+9 -in $Numbers входит ли указанное значение в коллекцию
+
+Массив: через запятую или оператор диапазона или оператор массива
+(11..20)[0] - обращение к первому элементу
+$a[-3..-1] - выводит три последних элементов
+$a = (ps notepad)
+
+foreach ($<item> in $<collection>){<statement list>}
+$a = 0..9 ; foreach ($element in $a) {$element}
+
+Лучше использовать команды, а не методы.
+Скрипт из файла или скрипт блок выполняются в своем scope, защищает от непреднамеренного изменения переменные, псевдонимы, функции и диски(PSDrives).
+
+ForEach-Object aka % aka foreach - для обработки каждого элемента в коллекции
+Get-Process | ForEach-Object -Process {$_.Name}
+
+Get-Alias aka gal
+Get-Alias -Definition Get-Process
+Get-Alias ps
+
+
+Get-ChildItem Env: - выводит переменные среды(выводит содержимое PSDrive Env:)
+Присвоить переменной $null - удалить ее
+$Env:Path += ';C:\Tools' - добавить к переменной в конец строку
+
+Measure-Object aka measure
+wl -l аналоги:
+Measure-Object -Line
+(ls | Measure-Object -line).Lines
+(ls).count
+
+Select-String aka sls - аналог grep и findstr.exe
+sls 'grep' .\Desktop\*.txt - первый позиционный параметр -Pattern, второй -Path
+-raw - выводит объекты типа строка (как grep), а не объекты типа MatchInfo
+-CaseSensitive - чувствительно к регистру, по умолчанию нет.
+-NotMatch - там где паттерн не встречается
+
+Get-Process aka ps
+Get-Item aka gi - получает объект файловой системы, реестра
+(gi <path to file>).Length/1mb - покажет размер файла в мегабайтах
+
+Get-ItemProperty aka gp
+Get-Variable aka gv
+
+Get-PSProvider - список "провайдеров": файловая система, переменные, кусты реестра
+
+Get-NetAdapter - отображает список интерфейсов и mac-адреса
+Отображает Ip адрес интерфейса Wlan:
+Get-NetIPAddress -InterfaceAlias wlan -AddressFamily IPv4
+
+Скачивает тестовый "вирусный" файл для проверки антивируса и его исключений:
+Invoke-WebRequest "https://secure.eicar.org/eicar.com.txt" -OutFile "test.txt"
+
+На Powershell 7.1+ не работает модуль Appx, обход (какой-то режим совместимости):
+Import-Module Appx -UseWindowsPowerShell
+Информация о UWP-приложении:
+Get-AppxPackage Name	Напр: Get-AppxPackage Microsoft.XboxGamingOverlay
+
+Экземпляр Powershell с возможностью выполнить скрипт:
+powershell -ExecutionPolicy Unrestricted
+Разрешить постоянно выполнение скриптов на локальной машине (пишется в реестр):
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+Обратно:
+Set-ExecutionPolicy -ExecutionPolicy Undefined
+Когда Undefined, то эффективная на клиентских версиях --> restricted
+Когда Undefined, то эффективная на серверах --> RemoteSigned
+У групповой политики приоритет над значением заданным локально.
+
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-7.3
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.3#_
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators?view=powershell-7.3
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_arrays?view=powershell-7.4
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_functions?view=powershell-7.4
+
+
+
+Get-Culture - форматы времени, дат, валют, символ разделителя целой и дробной части
+Get-UICulture - язык интерфейса пользователя(меню, сообщения)
+
+Get-WinSystemLocale - язык для отображения в программах, которые не поддерживают Unicode (для совместимости с устаревшими программами)
+Set-WinSystemLocale - из под админа, результат после перезагрузки. Очень желательно, что эта настройка совпадала с языком интерфейса (UICulture)
+
+HomeLocation - виндоус и программы могут использовать значение для выдачи контента для определенного региона
+
+BCP-47 language tags:
+ru-RU
+en_US
+Get-Culture ru-RU
+
+Get-WinUserLanguageList - список предпочитаемых языков
+
+Set-WinDefaultInputMethodOverride - язык ввода по-умочанию
+Set-WinDefaultInputMethodOverride -InputTip "0409:00000409" - задает английский язык ввода и стандартную раскладку клавиатуры
+0409 - идентификатор языка в Windows (LCID), 00000409 - идентификатор раскладки клавиатуры
+
+Добавить в/удалить из исключений защитника:
+Add-MpPreference -ExclusionPath <точный путь>
+Remove-MpPreference -ExclusionPath <точный путь> 
+
+Протестировать соединение:
+Test-Netconnection ya.ru -p 80 - также можно эту команду без параметров, тогда тест соединения к дефолтному серверу
+ИЛИ
+Test-Connection bing.com -TCPPort 443 -Detailed -Count 4
+Test-Connection -TargetName ya.ru -IPv4 -Repeat - пингует
+
+
+

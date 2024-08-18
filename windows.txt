@@ -1,0 +1,70 @@
+При загрузке с Ventoy в режиме WimBoot установка Виндоус не работает! Грузить в normal mode.
+
+windows10:
+Windows features (окно со времен WinXP) соответствует команде Get-WindowsOptionalFeature -online
+Parameters-->System-->Optional features соответствует команде Get-WindowsCapability -online
+
+Показать содержимое Wim файла
+Dism /Get-WimInfo /WimFile:C:\.... /index:1
+Смонтировать Wim файл:
+Dism /Mount-Image /ImageFile: /Index:1 /MountDir: /ReadOnly
+Размонтировать Wim файл:
+Dism /Unmount-image /MountDir: {/Commit | /Discard}
+Пакеты в образе: (указать путь к смонтированному образу(папке)) или /Get-MountedWimInfo ??
+Dism /Image: /Get-Packages   //или /Get-MountedWimInfo??
+Список функций в онлайн системе:
+Dism /online /Get-Features
+
+DISM.exe /Online /Cleanup-image /Restorehealth
+sfc.exe /scannow
+
+Стать владельцем файла и дать полный доступ к нему группе Администраторы:
+takeown /f <path_to_file>
+icacls <path_to_file> /grant administrators:F.
+ЛИБО (отсюда http://forum.oszone.net/post-908155-119.html):
+takeown /f <directory> /r /d y 
+icacls <directory> /grant:r <user or SID>:F /t
+
+Информация о состоянии активации Windows
+slmgr.vbs /dli
+slmgr.vbs /dlv
+
+Media Creation Tool command line options:
+MediaCreationTool20H2.exe /Eula Accept /Retail /MediaArch x64 /MediaLangCode en-US /MediaEdition Enterprise
+ИЛИ
+            setuphost.exe /Eula Accept /Retail /MediaArch x32 /MediaLangCode ru-ru /MediaEdition Enterprise /Download /Web
+
+
+GnuWin. Чтобы сделать вывод на нужном языке установить переменную окружения LANGUAGE в en, ru итд. Либо переименовать путь к файлам локализации, тогда будет английский вывод. 
+
+Создать нового пользователя и добавить его в группу Администраторы:
+net user /add username 1234
+net localgroup Администраторы username /add
+
+Здесь хранятся WLAN профили:
+C:\ProgramData\Microsoft\Wlansvc\Profiles\Interfaces
+netsh wlan export profile key=clear folder=<folder>
+netsh wlan add profile filename=<wlan_profile_file> user=all
+
+Reagentc.exe /info - информация о среде востановления
+
+Активация виндоус 10-11 про:
+slmgr/ipk W269N-WFGWX-YVC9B-4J6C9-T83GX
+slmgr /skms kms.digiboy.ir
+slmgr /ato
+
+Запуск от имени Системы:
+PsExec -i -s regedit
+advancedrun.exe /clear /run /EXEFilename C:\Windows\System32\cmd.exe /runas 4 # указывать полный путь к файлу, первые два параметра - запустить и без обращению к файлу конфига, 4 - это System, 8 - TI
+
+certutil.exe -hashfile <file_name>
+Get-FileHash <file_name>
+
+Get-AuthenticodeSignature - проверяет цифровую подпись, sigcheck из Sysinternals тоже
+
+Notepad++:
+Ctrl+L - вырезать строку
+Ctrl+Shift+L - удалить строку
+
+Нам не удалось создать новый или найти существующий раздел. Дополнительные сведения см в файлах журнала программы установки.
+type X:\Windows\panther\setuperr.log - посмотреть ошибку установки Windows
