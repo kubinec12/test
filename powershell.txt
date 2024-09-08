@@ -156,7 +156,9 @@ Import-Module Appx -UseWindowsPowerShell
 Get-AppxPackage Name	Напр: Get-AppxPackage Microsoft.XboxGamingOverlay
 
 Экземпляр Powershell с возможностью выполнить скрипт:
-powershell -ExecutionPolicy Unrestricted
+powershell.exe -ExecutionPolicy Unrestricted
+Можно и так, без создания экземпляра:
+pwsh.exe - -ExecutionPolicy ByPass -file Script.ps1
 Разрешить постоянно выполнение скриптов на локальной машине (пишется в реестр):
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 Обратно:
