@@ -72,4 +72,5 @@ date -R - показывает время с указанием часового
 
 hostnamectl set-hostname <new-hostname> - пишет <new-hostname> в файл /etc/hostname, но не затрагивает /etc/hosts
 
-Тестовое изменение)
+Список открытых портов tcp и udp с указанием программы, которая слушает:
+netstat -ltunp
