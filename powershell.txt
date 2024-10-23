@@ -9,7 +9,7 @@ ft -HideTableHeaders
 ft -RepeatHeader
 ft -view <view name> 
 Get-Process notepad |
-  Format-Table ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime} - вычисляемое поле
+  Format-Table ProcessName, @{Label="TotalRunningTime"; Expression={(Get-Date) - $_.StartTime}} - вычисляемое поле
 
 *.format.ps1xml в этих файлах описание формата вывода для различных команд
 
