@@ -1,8 +1,16 @@
 При загрузке с Ventoy в режиме WimBoot установка Виндоус не работает! Грузить в normal mode.
 
-windows10:
-Windows features (окно со времен WinXP) соответствует команде Get-WindowsOptionalFeature -online
-Parameters-->System-->Optional features соответствует команде Get-WindowsCapability -online
+WINDOWS 10
+"Дополнительные компоненты Windows" (Windows Optional Features) Встроены в Windows, но могут быть включены или выключены, окошко Windows features (окно со времен WinXP):
+Win+R, optionalfeatures
+Get-WindowsOptionalFeature -online|ft
+dism /online /get-features /format:table
+
+"Возможности Windows" (Windows Capabilities), которые можно устанавливать и удалять независимо от образа системы. Эти компоненты распространяются через Windows Update:
+Parameters-->System-->Optional features:
+Get-WindowsCapability -online|ft
+dism /online /Get-Capabilities /format:table
+
 
 Показать содержимое Wim файла
 Dism /Get-WimInfo /WimFile:C:\.... /index:1
