@@ -2,6 +2,7 @@
 cmd /c <string>
 cmd /k <string>    #не закрывает окно консоли
 
+cmd /k hostname - вставить в Run, покажет имя хоста
 
 type - Displays the contents of a text file or files.
 
