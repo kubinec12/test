@@ -25,7 +25,7 @@ Dism /online /Get-Features
 
 sfc.exe /scannow
 DISM /Online /Cleanup-image /Restorehealth
-DISM /Get-WimInfo /WimFile:полный_путь_к_файлу_install.wim /index:3
+DISM /Get-WimInfo /WimFile:полный_путь_к_файлу_install.wim /index:3 или Repair-WindowsImage -Online -RestoreHealth
 DISM /Online /Cleanup-Image /RestoreHealth /Source:wim:путь_к_файлу_install:индекс /LimitAccess
 последнюю команду попробовать также с отключенным интернетом
 
