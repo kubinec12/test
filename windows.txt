@@ -23,8 +23,11 @@ Dism /Image: /Get-Packages   //или /Get-MountedWimInfo??
 Список функций в онлайн системе:
 Dism /online /Get-Features
 
-DISM.exe /Online /Cleanup-image /Restorehealth
 sfc.exe /scannow
+DISM /Online /Cleanup-image /Restorehealth
+DISM /Get-WimInfo /WimFile:полный_путь_к_файлу_install.esd_или_install.wim
+DISM /Online /Cleanup-Image /RestoreHealth /Source:путь_к_файлу_install:индекс /LimitAccess
+
 
 Стать владельцем файла и дать полный доступ к нему группе Администраторы:
 takeown /f <path_to_file>
