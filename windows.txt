@@ -25,8 +25,8 @@ Dism /online /Get-Features
 
 sfc.exe /scannow
 DISM /Online /Cleanup-image /Restorehealth
-DISM /Get-WimInfo /WimFile:полный_путь_к_файлу_install.esd_или_install.wim /index:3
-DISM /Online /Cleanup-Image /RestoreHealth /Source:путь_к_файлу_install:индекс /LimitAccess
+DISM /Get-WimInfo /WimFile:полный_путь_к_файлу_install.wim /index:3
+DISM /Online /Cleanup-Image /RestoreHealth /Source:wim:путь_к_файлу_install:индекс /LimitAccess
 
 
 Стать владельцем файла и дать полный доступ к нему группе Администраторы:
