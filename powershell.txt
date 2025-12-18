@@ -205,5 +205,7 @@ Test-Netconnection ya.ru -p 80 - также можно эту команду б�
 Test-Connection bing.com -TCPPort 443 -Detailed -Count 4
 Test-Connection -TargetName ya.ru -IPv4 -Repeat - пингует
 
-
-
+Работа с историей:
+Invoke-History -Id 15 # или сокращенно r 15
+Ctrl + R: Интерактивный поиск по истории. Начните вводить часть команды, и PowerShell найдет наиболее подходящую.
+F8: Введите начало команды (например, Get-) и нажмите F8, чтобы найти в истории команды, начинающиеся именно с этого текста. 
